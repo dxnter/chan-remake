@@ -5,6 +5,8 @@ const ThreadController = require('../controllers/thread.controller');
 const ReplyController = require('../controllers/reply.controller');
 
 // POST, PUT, DELETE, Threads
+router.get('/threads/:board', ThreadController.fetchRecent);
+
 router.post('/threads/:board', ThreadController.create);
 
 router.put('/threads/:board', (req, res) => {});
