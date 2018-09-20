@@ -1,16 +1,18 @@
 require('dotenv').config();
 const express = require('express');
-const logger = require('logger');
+const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
+const database = require('./config/database');
 let PORT = 5000;
 const app = express();
+const routes = require('./routes');
 
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   helmet({
     frameguard: {
@@ -25,13 +27,11 @@ app.use(
   })
 );
 
+app.use('/api', routes);
 
-app.post()
 mongoose
   .connect(
-    `mongodb://${process.env.DB_USER}:${
-      process.env.DB_PASSWORD
-    }@ds163402.mlab.com:63402/chan-remake`,
+    database.url,
     { useNewUrlParser: true }
   )
   .then(() => console.log('Now connected to MongoDB'))
