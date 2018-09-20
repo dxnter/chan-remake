@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
 const Thread = require('../models/thread.model');
 
 class ThreadController {
   fetchRecent(req, res) {
-    return Thread.find()
+    return Thread.find({ board: req.params.board })
       .sort({ _id: -1 })
       .limit(10)
       .populate('reply')
@@ -12,13 +11,20 @@ class ThreadController {
       });
   }
 
-  create(req, res) {
-    Thread.create(req.body, (err, thread) => {
-      if (err) {
-        return res.json(err);
+  createThread(req, res) {
+    return Thread.create(
+      {
+        board: req.params.board,
+        text: req.body.text,
+        delete_password: req.body.delete_password
+      },
+      (err, thread) => {
+        if (err) {
+          return res.json(err);
+        }
+        return res.json(thread);
       }
-      return res.json(thread);
-    });
+    );
   }
 }
 

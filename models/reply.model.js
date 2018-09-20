@@ -19,7 +19,7 @@ ReplySchema.pre('save', function(next) {
   );
   next();
 });
-
+// Custom mongoose method
 ReplySchema.methods.authenticate = function(delete_password) {
   return bcrypt.compareSync(delete_password, this.delete_password);
 };
